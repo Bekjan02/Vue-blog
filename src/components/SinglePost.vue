@@ -1,12 +1,21 @@
 <template>
   <div class="post">
-    <router-link :to="{name: 'Details', params: { id: post.id }}">
+    <router-link :to="{ name: 'Details', params: { id: post.id } }">
       <h3>{{ post.title }}</h3>
     </router-link>
+
+    <img src="" alt="">
+
     <p>
       {{ hiddedPost }}
     </p>
-    <span v-for="tag in post.tags" :key="tag"> #{{ tag }} </span>
+    <router-link
+      v-for="tag in post.tags"
+      :key="tag"
+      :to="{ name: 'Tags', params: { tag } }"
+    >
+      #{{ tag }}
+    </router-link>
   </div>
 </template>
 

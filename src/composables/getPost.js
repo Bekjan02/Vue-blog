@@ -1,4 +1,6 @@
 import { ref } from "vue";
+import { firestore } from "../firebase/config";
+
 const getPost = (id) => {
   const post = ref(null);
   const error = ref(null);
@@ -7,12 +9,8 @@ const getPost = (id) => {
       await new Promise((resolve) => {
         setTimeout(resolve, 1000);
       });
-      const response = await fetch("http://localhost:3000/posts/" + id);
-      if (!response.ok) {
-        throw Error("No data Available");
-      }
-      post.value = await response.json();
-      console.log(post.value);
+      const response = await firestore.collection("posts").doc(id).get();
+      post.value = { ...response.data(), id };
     } catch (e) {
       error.value = e.message;
       console.log(e);

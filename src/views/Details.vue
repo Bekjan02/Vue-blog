@@ -15,7 +15,6 @@ export default {
   components: { Spinner },
   setup(props) {
     const { post, error, fetchingPost } = getPost(props.id);
-    console.log(post);
     onMounted(() => fetchingPost());
 
     return { post, error };

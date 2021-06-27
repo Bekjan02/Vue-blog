@@ -1,6 +1,6 @@
 <template>
   <Navbar/>
-  <router-view/>
+  <router-view :key="$route.path"/>
 </template>
 <script>
 import Navbar from './components/Navbar.vue';

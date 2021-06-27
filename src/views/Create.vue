@@ -3,14 +3,20 @@
     <form @submit="handleSubmit">
       <label>Заголовок:</label>
       <input type="text" required v-model="title" />
+
+      <label>Картинка</label>
+      <input type="text"  v-model="img" />
+
       <label>Контент</label>
       <textarea type="text" required v-model="body"></textarea>
+
       <label>Теги</label>
       <input
         @keydown.enter.prevent="handleAddTag"
         type="text"
         v-model="tag"
       />
+
       <div v-for="tag in tags" :key="tag" class="pill">#{{ tag }}</div>
       <button>Создать</button>
     </form>
@@ -23,6 +29,7 @@ import { useRouter } from 'vue-router'
 export default {
   setup() {
     const title = ref("");
+    const img = ref([]);
     const body = ref("");
     const tag = ref("");
     const tags = ref([]);
@@ -55,7 +62,7 @@ export default {
         }
     }
 
-    return { title, body, tag, tags, handleAddTag, handleSubmit };
+    return { title, img, body, tag, tags, handleAddTag, handleSubmit };
   },
 };
 </script>

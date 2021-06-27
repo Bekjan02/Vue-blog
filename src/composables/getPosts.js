@@ -1,20 +1,23 @@
 import { ref } from "vue";
+import { firestore } from "../firebase/config";
+
 const getPosts = () => {
   const posts = ref([]);
   const error = ref(null);
   const fetchingPosts = async () => {
     try {
-      const response = await fetch("http://localhost:3000/posts");
-      if (!response.ok) {
-        throw Error("No data Available");
-      }
-      posts.value = await response.json();
+      const response = await firestore.collection("posts").get();
+      posts.value = response.docs.map((doc) => {
+        return { ...doc.data(), id: doc.id };
+      });
+
+      console.log(response.docs);
     } catch (e) {
       error.value = e.message;
       console.log(e);
     }
   };
-  return { posts, error, fetchingPosts }
+  return { posts, error, fetchingPosts };
 };
 
-export default getPosts
+export default getPosts;
