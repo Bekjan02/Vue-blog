@@ -6,12 +6,10 @@ const getPosts = () => {
   const error = ref(null);
   const fetchingPosts = async () => {
     try {
-      const response = await firestore.collection("posts").get();
+      const response = await firestore.collection("posts").orderBy('createDate', 'desc').get()
       posts.value = response.docs.map((doc) => {
         return { ...doc.data(), id: doc.id };
       });
-
-      console.log(response.docs);
     } catch (e) {
       error.value = e.message;
       console.log(e);

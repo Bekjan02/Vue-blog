@@ -20,7 +20,7 @@ import TagsCloud from "@/components/TagsCloud.vue";
 
 export default {
   components: { PostsList, Spinner, TagsCloud },
-  setup(Spinner) {
+  setup() {
     const route = useRoute();
     const tag = route.params.tag;
 

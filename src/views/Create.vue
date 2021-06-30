@@ -1,21 +1,17 @@
 <template>
   <div class="create">
-    <form @submit="handleSubmit">
+    <form @submit.prevent="handleSubmit">
       <label>Заголовок:</label>
       <input type="text" required v-model="title" />
 
-      <label>Картинка</label>
-      <input type="text"  v-model="img" />
+      <!-- <label>Картинка</label>
+      <input type="text" v-model="img" /> -->
 
       <label>Контент</label>
       <textarea type="text" required v-model="body"></textarea>
 
       <label>Теги</label>
-      <input
-        @keydown.enter.prevent="handleAddTag"
-        type="text"
-        v-model="tag"
-      />
+      <input @keydown.enter.prevent="handleAddTag" type="text" v-model="tag" />
 
       <div v-for="tag in tags" :key="tag" class="pill">#{{ tag }}</div>
       <button>Создать</button>
@@ -25,16 +21,18 @@
 
 <script>
 import { ref } from "vue";
-import { useRouter } from 'vue-router'
+import { useRouter } from "vue-router";
+import { firestore, timestamp } from "../firebase/config";
+
 export default {
   setup() {
     const title = ref("");
-    const img = ref([]);
+    const img = ref("");
     const body = ref("");
     const tag = ref("");
     const tags = ref([]);
 
-    const router = useRouter()
+    const router = useRouter();
 
     const handleAddTag = () => {
       tag.value = tag.value.replace(/\s/, "");
@@ -46,21 +44,20 @@ export default {
     };
 
     const handleSubmit = async () => {
-        try {
-            await fetch("http://localhost:3000/posts/", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: title.value,
-                    body: body.value,
-                    tags: tags.value,
-                })
-            })
-            router.push({ name: "Home" })
-        }catch(e) {
-            console.log(e);
-        }
-    }
+      try {
+        const newPost = {
+          title: title.value,
+          body: body.value,
+          tags: tags.value,
+          createDate: timestamp()
+        };
+        await firestore.collection("posts").add(newPost);
+
+        router.push({ name: "Home" });
+      } catch (e) {
+        console.log(e);
+      }
+    };
 
     return { title, img, body, tag, tags, handleAddTag, handleSubmit };
   },
