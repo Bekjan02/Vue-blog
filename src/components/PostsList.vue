@@ -7,16 +7,12 @@
 </template>
 
 <script>
-import SinglePost from "./SinglePost.vue";
-import { ref } from "vue";
+// @ is an alias to /src
+import SinglePost from './SinglePost.vue';
 
 export default {
   components: { SinglePost },
   props: ["posts"],
-  setup() {
-
-  },
-};
+  setup(){}
+}
 </script>
-
-<style scoped></style>

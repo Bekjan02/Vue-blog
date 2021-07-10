@@ -1,18 +1,12 @@
 <template>
   <div class="create">
     <form @submit.prevent="handleSubmit">
-      <label>Заголовок:</label>
+      <label class="label">Заголовок:</label>
       <input type="text" required v-model="title" />
-
-      <!-- <label>Картинка</label>
-      <input type="text" v-model="img" /> -->
-
-      <label>Контент</label>
+      <label class="label">Контент:</label>
       <textarea type="text" required v-model="body"></textarea>
-
-      <label>Теги</label>
+      <label class="label">Теги:</label>
       <input @keydown.enter.prevent="handleAddTag" type="text" v-model="tag" />
-
       <div v-for="tag in tags" :key="tag" class="pill">#{{ tag }}</div>
       <button>Создать</button>
     </form>
@@ -22,12 +16,10 @@
 <script>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { firestore, timestamp } from "../firebase/config";
-
+import { firestore,timestamp } from "../firebase/config";
 export default {
   setup() {
     const title = ref("");
-    const img = ref("");
     const body = ref("");
     const tag = ref("");
     const tags = ref([]);
@@ -46,11 +38,12 @@ export default {
     const handleSubmit = async () => {
       try {
         const newPost = {
-          title: title.value,
-          body: body.value,
-          tags: tags.value,
-          createDate: timestamp()
+            title: title.value,
+            body: body.value,
+            tags: tags.value,
+            date: timestamp(),
         };
+
         await firestore.collection("posts").add(newPost);
 
         router.push({ name: "Home" });
@@ -59,12 +52,22 @@ export default {
       }
     };
 
-    return { title, img, body, tag, tags, handleAddTag, handleSubmit };
+    return { title, body, tag, tags, handleAddTag, handleSubmit };
   },
 };
 </script>
 
 <style>
+.inputFiles__label {
+  font-size: 30px;
+  border: #444 1px dotted;
+  padding: 40px;
+}
+.inputFiles {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
 form {
   max-width: 480px;
   margin: 0 auto;
@@ -82,7 +85,7 @@ textarea {
 textarea {
   height: 160px;
 }
-label {
+.label {
   display: inline-block;
   margin-top: 30px;
   position: relative;
@@ -91,7 +94,7 @@ label {
   margin-bottom: 10px;
   padding: 5px 0;
 }
-label::before {
+.label::before {
   content: "";
   display: block;
   width: 100%;

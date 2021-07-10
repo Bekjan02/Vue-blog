@@ -1,45 +1,48 @@
 <template>
   <div class="container">
     <div v-if="posts.length" class="grid">
-      <PostsList v-if="showPost" :posts="posts" />
-      <TagsCloud :posts="posts"/>
+      <PostList v-if="showPosts" :posts="posts" />
+      <TagsCloud :posts="posts" />
     </div>
-    <div v-else> <Spinner/> </div>
-    <button @click="showPost = !showPost">Скрыть/Показать элемент</button>
-    <button @click="posts.pop()">Удалить последний элемент</button>
+    <div v-else>
+      <Spinner />
+    </div>
+    <button @click="showPosts = !showPosts">Скрыть/Показать посты</button>
+    <button @click="posts.pop()">Delete last post</button>
   </div>
 </template>
 
 <script>
+// @ is an alias to /src
 import { onMounted, ref } from "vue";
-import PostsList from "../components/PostsList.vue";
-import TagsCloud from "../components/TagsCloud.vue";
+import PostList from "../components/PostsList.vue";
 import Spinner from "../components/Spinner.vue";
-import getPosts from "../composables/getPosts";
+import getPosts from '../composables/getPosts';
+import TagsCloud from "../components/TagsCloud.vue";
 
 export default {
-  name: "Home",
-  components: { PostsList, TagsCloud, Spinner },
+  components: { PostList, TagsCloud, Spinner },
   setup() {
-    const { posts, error, fetchingPosts } = getPosts();
+    
+    const { posts,error,fetchingPosts } = getPosts();
+
     onMounted(() => fetchingPosts());
 
-    const showPost = ref(true);
-
-    return { posts, showPost, error };
-  },
-};
+    const showPosts = ref(true);
+    return { posts, showPosts };
+}
+}
 </script>
 
-<style>
+<style scoped>
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 10px;
 }
-.grid {
+.grid{
   display: grid;
-  grid-template-columns:  3fr 1fr;
+  grid-template-columns: 3fr 1fr;
   gap: 20px;
 }
 </style>

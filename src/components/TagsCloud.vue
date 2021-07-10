@@ -1,17 +1,16 @@
 <template>
   <div class="tags-cloud">
-    <h3>Теги</h3>
+    <h4>Tags</h4>
     <div v-for="tag in tags" :key="tag">
       <router-link :to="{ name: 'Tags', params: { tag } }"
-        ># {{ tag }}
-      </router-link>
+        >#{{ tag }}</router-link
+      >
     </div>
   </div>
 </template>
 
 <script>
 import getTags from "@/composables/getTags";
-
 export default {
   props: ["posts"],
   setup(props) {
