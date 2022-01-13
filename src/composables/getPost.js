@@ -6,9 +6,6 @@ const getPost = (id) => {
   const error = ref(null);
   const fetchingPost = async () => {
     try {
-      await new Promise((resolve) => {
-        setTimeout(resolve, 1000);
-      });
 
       const response = await firestore
         .collection("posts")

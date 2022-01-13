@@ -53,7 +53,7 @@ export default {
   position: absolute;
   z-index: -1;
   padding-right: 40px;
-  left: -30px;
+  left: -10px;
   transform: rotateZ(-1deg);
 }
 </style>
